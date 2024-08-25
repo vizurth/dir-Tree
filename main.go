@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"sort"
+	"strconv"
+	// "strconv"
 )
 
 
@@ -32,7 +34,12 @@ func recCheck(out io.Writer,pathF string, sliceForGrafity []bool) error{
 			if file.IsDir(){
 				dirs = append(dirs, file.Name())
 			} else {
-				files = append(files, file.Name())
+				info, _ := file.Info()
+				if strconv.FormatInt(info.Size(), 10) == "0"{
+					files = append(files, file.Name() + " (empty)")
+				} else {
+					files = append(files, file.Name() + " (" + strconv.FormatInt(info.Size(), 10) + "b)")
+				}
 			}
 		}
 	}
