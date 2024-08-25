@@ -11,7 +11,7 @@ import (
 )
 
 
-func recCheck(out io.Writer,pathF string, sliceForGrafity []bool) error{
+func dirTree(out io.Writer,pathF string, sliceForGrafity []bool) error{
 	// открытие файла
 	openDir, err := os.Open(pathF)
 	if err != nil {	return err }
@@ -57,7 +57,7 @@ func recCheck(out io.Writer,pathF string, sliceForGrafity []bool) error{
 		graf, _ := multiTabs(sliceForGrafity)
 		fmt.Fprint(out, graf, dir,"\n")
 
-		recCheck(out, pathF + "/" + dir, sliceForGrafity)
+		dirTree(out, pathF + "/" + dir, sliceForGrafity)
 		sliceForGrafity = sliceForGrafity[:len(sliceForGrafity)-1]
 	}
 
@@ -71,7 +71,7 @@ func recCheck(out io.Writer,pathF string, sliceForGrafity []bool) error{
 		graf, _ := multiTabs(sliceForGrafity)
 		fmt.Fprint(out, graf, file,"\n")
 
-		recCheck(out, pathF + "/" + file, sliceForGrafity)
+		dirTree(out, pathF + "/" + file, sliceForGrafity)
 		sliceForGrafity = sliceForGrafity[:len(sliceForGrafity)-1]
 	}
 	return nil
@@ -102,7 +102,7 @@ func multiTabs(slice []bool) (string, []bool){
 
 func main(){
 	path := "./testdata"
-	if err := recCheck(os.Stdout,path, nil); err != nil{
+	if err := dirTree(os.Stdout,path, nil); err != nil{
 		log.Println(err)
 	}
 
